@@ -16,9 +16,13 @@
 else
 {
     <div class="btn-group pull-right">
-        <a class="navbar-brand" href="/Account/Login">Вход</a>
+        <form method="post" asp-controller="Account" asp-action="Login" id="loginform" asp-antiforgery="true">
+            <a class="navbar-brand" href="#" onclick="document.getElementById('loginform').submit()">Вход</a>
+        </form>
         <a>&nbsp;&nbsp;&nbsp;</a>
-        <a class="navbar-brand" href="/Account/Register">Регистрация</a>
+        <form method="post" asp-controller="Account" asp-action="Register" id="registerform" asp-antiforgery="true">
+            <a class="navbar-brand" href="#" onclick="document.getElementById('registerform').submit()">Регистрация</a>
+        </form>
     </div>
 }
 

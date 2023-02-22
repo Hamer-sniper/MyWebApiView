@@ -1,5 +1,4 @@
 ﻿using MyWebApiView.Models;
-using MyWebApiView.DataContext;
 using MyWebApiView.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
@@ -9,12 +8,42 @@ namespace MyWebApiView.Controllers
 {
     public class DataBookDataApi : IDataBookData
     {
-        string baseUrl = @"https://localhost:7065/api/MyApi/";
+        string baseUrl = @"https://localhost:7161/api/MyApi/";
+
+        string token = string.Empty;
         private HttpClient httpClient { get; set; }
 
-        public DataBookDataApi(DataBookContext dB)
+        public DataBookDataApi()
         {
             httpClient = new HttpClient();
+        }
+
+        public void AddTokenToClient(string accessToken = "")
+        {
+            if (!string.IsNullOrWhiteSpace(accessToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            }
+        }
+
+        public void GetToken(string UserName, string Password)
+        {
+            token = httpClient.GetStringAsync($"https://localhost:7161/api/Token/{UserName}/{Password}").Result;
+
+            AddTokenToClient(token);
+        }
+
+        public void Register(string UserName, string Password)
+        {
+            token = httpClient.GetStringAsync($"https://localhost:7161/api/Register/{UserName}/{Password}").Result;
+
+            AddTokenToClient(token);
+        }
+
+        public void RemoveTokenFromClient()
+        {
+            httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
         /// <summary>

@@ -22,21 +22,21 @@ namespace MyWebApiView.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public IActionResult GetDataBook(int dataBookId)
         {
             return View(dataBookData.ReadDataBook(dataBookId));
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public IActionResult AddDataBook()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult AddDataFromField(DataBook dataBook)
         {
             dataBookData.CreateDataBook(dataBook);
@@ -44,14 +44,14 @@ namespace MyWebApiView.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult EditDataBook(int dataBookId)
         {
             return View(dataBookData.ReadDataBook(dataBookId));
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult EditDataFromField(DataBook dataBook)
         {
             dataBookData.UpdateDataBook(dataBook);
@@ -59,14 +59,14 @@ namespace MyWebApiView.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult DeleteDataBook(int dataBookId)
         {
             return View(dataBookData.ReadDataBook(dataBookId));
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult DeleteDataFromField(DataBook dataBook)
         {
             dataBookData.DeleteDataBook(dataBook);

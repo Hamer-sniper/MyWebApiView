@@ -1,24 +1,28 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyWebApiView.Authentification;
+using MyWebApiView.Interfaces;
+using System.Xml.Linq;
 
 namespace MyWebApiView.Controllers
 {
     public class AccountController : Controller
     {
 
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        //private readonly UserManager<User> _userManager;
+        //private readonly SignInManager<User> _signInManager;
+        private readonly IDataBookData dataBookData;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(IDataBookData dBData)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            //_userManager = userManager;
+            //_signInManager = signInManager;
+            dataBookData = dBData;
         }
 
         [HttpGet]
         public IActionResult Login(string returnUrl)
-        {
+        {            
             if (string.IsNullOrWhiteSpace(returnUrl)) returnUrl = "/";
 
             return View(new UserLogin()
@@ -27,12 +31,14 @@ namespace MyWebApiView.Controllers
             });
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Login(UserLogin model)
         {
+            if (string.IsNullOrWhiteSpace(model.ReturnUrl)) model.ReturnUrl = "/";
+
             if (ModelState.IsValid)
             {
-                var loginResult = await _signInManager.PasswordSignInAsync(model.LoginProp,
+                /*var loginResult = await _signInManager.PasswordSignInAsync(model.LoginProp,
                     model.Password,
                     false,
                     lockoutOnFailure: false);
@@ -45,8 +51,10 @@ namespace MyWebApiView.Controllers
                     }
 
                     return RedirectToAction("Index", "DataBook");
-                }
+                }*/
 
+                dataBookData.GetToken(model.LoginProp, model.Password);
+                return RedirectToAction("Index", "DataBook");
             }
 
             ModelState.AddModelError("", "Пользователь не найден");
@@ -60,12 +68,12 @@ namespace MyWebApiView.Controllers
             return View(new UserRegistration());
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> Register(UserRegistration model)
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.LoginProp };
+                /*var user = new User { UserName = model.LoginProp };
                 var createResult = await _userManager.CreateAsync(user, model.Password);
 
                 if (createResult.Succeeded)
@@ -79,17 +87,20 @@ namespace MyWebApiView.Controllers
                     {
                         ModelState.AddModelError("", identityError.Description);
                     }
-                }
+                }*/
+
+                dataBookData.Register(model.LoginProp, model.Password);
+                return RedirectToAction("Index", "DataBook");
             }
 
             return View(model);
         }
 
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        [HttpPost]
+        public IActionResult Logout()
         {
-            await _signInManager.SignOutAsync();
+            dataBookData.RemoveTokenFromClient();
             return RedirectToAction("Index", "DataBook");
         }
 

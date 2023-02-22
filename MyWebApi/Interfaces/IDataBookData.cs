@@ -1,4 +1,5 @@
 ﻿using MyWebApiView.Models;
+using System.Net.Http;
 
 namespace MyWebApiView.Interfaces
 {
@@ -48,6 +49,23 @@ namespace MyWebApiView.Interfaces
         /// <param name="dataBookId">Id записи</param>
         void DeleteDataBookById(int dataBookId);
 
+        /// <summary>
+        /// Логин (получить токен).
+        /// </summary>
+        /// <param name="UserName">Логин</param>
+        /// <param name="Password">Пароль</param>
+        void GetToken(string UserName, string Password);
 
+        /// <summary>
+        /// Зарегистрироваться.
+        /// </summary>
+        /// <param name="UserName">Логин</param>
+        /// <param name="Password">Пароль</param>
+        void Register(string UserName, string Password);
+
+        /// <summary>
+        /// Разлогиниться.
+        /// </summary>
+        void RemoveTokenFromClient();
     }
 }
