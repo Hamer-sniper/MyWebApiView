@@ -13,10 +13,19 @@ namespace MyWebApiView.Controllers
             dataBookData = dBData;
         }
 
+        public void AddTokenToHeader()
+        {
+            var token = HttpContext.Request.Cookies[".AspNetCore.Application.Id"];
+            if (!string.IsNullOrEmpty(token))
+                dataBookData.AddTokenToClient(token);
+        }
+
         [HttpGet]
         //[AllowAnonymous]
         public IActionResult Index()
         {
+            AddTokenToHeader();
+
             ViewBag.DataBook = dataBookData.GetAllDatabooks();
             return View();
         }
@@ -25,9 +34,7 @@ namespace MyWebApiView.Controllers
         //[Authorize]
         public IActionResult GetDataBook(int dataBookId)
         {
-            var token = HttpContext.Request.Cookies[".AspNetCore.Application.Id"];
-            if (!string.IsNullOrEmpty(token))
-                dataBookData.AddTokenToClient(token);
+            AddTokenToHeader();
 
             return View(dataBookData.ReadDataBook(dataBookId));
         }
@@ -36,6 +43,8 @@ namespace MyWebApiView.Controllers
         //[Authorize]
         public IActionResult AddDataBook()
         {
+            AddTokenToHeader();
+
             return View();
         }
 
@@ -43,6 +52,8 @@ namespace MyWebApiView.Controllers
         //[Authorize]
         public IActionResult AddDataFromField(DataBook dataBook)
         {
+            AddTokenToHeader();
+
             dataBookData.CreateDataBook(dataBook);
             return Redirect("~/");
         }
@@ -51,6 +62,8 @@ namespace MyWebApiView.Controllers
         //[Authorize(Roles = "Admin")]
         public IActionResult EditDataBook(int dataBookId)
         {
+            AddTokenToHeader();
+
             return View(dataBookData.ReadDataBook(dataBookId));
         }
 
@@ -58,6 +71,8 @@ namespace MyWebApiView.Controllers
         //[Authorize(Roles = "Admin")]
         public IActionResult EditDataFromField(DataBook dataBook)
         {
+            AddTokenToHeader();
+
             dataBookData.UpdateDataBook(dataBook);
             return Redirect("~/");
         }
@@ -66,6 +81,8 @@ namespace MyWebApiView.Controllers
         //[Authorize(Roles = "Admin")]
         public IActionResult DeleteDataBook(int dataBookId)
         {
+            AddTokenToHeader();
+
             return View(dataBookData.ReadDataBook(dataBookId));
         }
 
@@ -73,6 +90,8 @@ namespace MyWebApiView.Controllers
         //[Authorize(Roles = "Admin")]
         public IActionResult DeleteDataFromField(DataBook dataBook)
         {
+            AddTokenToHeader();
+
             dataBookData.DeleteDataBook(dataBook);
             return Redirect("~/");
         }

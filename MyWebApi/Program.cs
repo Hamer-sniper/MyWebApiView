@@ -26,11 +26,7 @@ public class Program
             options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
         });
 
-        //builder.Services.AddCors();
-
         var app = builder.Build();
-
-        //app.UseHttpsRedirection();
 
         app.UseStaticFiles();
 
@@ -46,19 +42,6 @@ public class Program
         app.UseAuthentication();
 
         app.UseAuthorization();
-
-        /*app.UseCors(x => x
-        .WithOrigins("https://localhost:7161/api/MyApi") // путь к нашему SPA клиенту
-        .AllowCredentials()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
-
-        app.UseCookiePolicy(new CookiePolicyOptions
-        {
-            MinimumSameSitePolicy = SameSiteMode.Strict,
-            HttpOnly = HttpOnlyPolicy.Always,
-            Secure = CookieSecurePolicy.Always
-        });*/
 
         app.MapControllerRoute(
             name: "default",
