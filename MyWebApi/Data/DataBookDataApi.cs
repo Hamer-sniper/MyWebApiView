@@ -34,6 +34,13 @@ namespace MyWebApiView.Controllers
             AddTokenToClient(token);
         }
 
+        public string GetTokenString(string UserName, string Password)
+        {
+            token = httpClient.GetStringAsync($"https://localhost:7161/api/Token/{UserName}/{Password}").Result;
+
+            return token;
+        }
+
         public void Register(string UserName, string Password)
         {
             token = httpClient.GetStringAsync($"https://localhost:7161/api/Register/{UserName}/{Password}").Result;
@@ -52,7 +59,7 @@ namespace MyWebApiView.Controllers
         /// <returns></returns>
         public List<DataBook> GetAllDatabooks()
         {
-            string url = baseUrl;
+            string url = baseUrl; //"https://3259a5e4-18eb-4866-b9c6-2907ee1dc07b.mock.pstmn.io";// baseUrl;
 
             string json = httpClient.GetStringAsync(url).Result;
 

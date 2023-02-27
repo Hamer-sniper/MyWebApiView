@@ -17,15 +17,16 @@ public class Program
 
         builder.Services.AddMvc(mvcOtions => mvcOtions.EnableEndpointRouting = false);
 
-        builder.Services.AddTransient<IDataBookData, DataBookDataApi>();
+        builder.Services.AddScoped<IDataBookData, DataBookDataApi>();
 
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = "JwtBearer";
-            options.DefaultChallengeScheme = "JwtBearer";
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
         });
 
-        builder.Services.AddCors();
+        //builder.Services.AddCors();
 
         var app = builder.Build();
 
@@ -33,14 +34,14 @@ public class Program
 
         app.UseStaticFiles();
 
-        /*app.Use(async (context, next) =>
+        app.Use(async (context, next) =>
         {
             var token = context.Request.Cookies[".AspNetCore.Application.Id"];
             if (!string.IsNullOrEmpty(token))
                 context.Request.Headers.Add("Authorization", "Bearer " + token);
 
             await next();
-        });*/
+        });
 
         app.UseAuthentication();
 

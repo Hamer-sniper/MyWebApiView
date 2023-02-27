@@ -22,7 +22,7 @@ namespace MyWebApiView.Controllers
 
         [HttpGet]
         public IActionResult Login(string returnUrl)
-        {            
+        {
             if (string.IsNullOrWhiteSpace(returnUrl)) returnUrl = "/";
 
             return View(new UserLogin()
@@ -53,7 +53,14 @@ namespace MyWebApiView.Controllers
                     return RedirectToAction("Index", "DataBook");
                 }*/
 
-                dataBookData.GetToken(model.LoginProp, model.Password);
+                HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id",
+                    dataBookData.GetTokenString(model.LoginProp, model.Password),
+        new CookieOptions
+        {
+            MaxAge = TimeSpan.FromMinutes(60)
+        });
+
+                //dataBookData.GetToken(model.LoginProp, model.Password);
                 return RedirectToAction("Index", "DataBook");
             }
 
