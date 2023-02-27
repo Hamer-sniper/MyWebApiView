@@ -3,6 +3,7 @@ using MyWebApiView.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MyWebApiView.Controllers
 {
@@ -23,7 +24,7 @@ namespace MyWebApiView.Controllers
             if (!string.IsNullOrWhiteSpace(accessToken))
             {
                 httpClient.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+                    new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, accessToken);
             }
         }
 
@@ -67,21 +68,6 @@ namespace MyWebApiView.Controllers
         }
 
         /// <summary>
-        /// Добавить запись в БД.
-        /// </summary>
-        /// <param name="dataBook">Запись</param>
-        public void CreateDataBook(DataBook dataBook)
-        {
-            string url = baseUrl;
-
-            var r = httpClient.PostAsync(
-                requestUri: url,
-                content: new StringContent(JsonConvert.SerializeObject(dataBook), Encoding.UTF8,
-                mediaType: "application/json")
-                ).Result;
-        }
-
-        /// <summary>
         /// Получить запись из БД.
         /// </summary>
         /// <param name="dataBookId">Id записи</param>
@@ -94,6 +80,21 @@ namespace MyWebApiView.Controllers
 
             return JsonConvert.DeserializeObject<DataBook>(json);
         }
+
+        /// <summary>
+        /// Добавить запись в БД.
+        /// </summary>
+        /// <param name="dataBook">Запись</param>
+        public void CreateDataBook(DataBook dataBook)
+        {
+            string url = baseUrl;
+
+            var r = httpClient.PostAsync(
+                requestUri: url,
+                content: new StringContent(JsonConvert.SerializeObject(dataBook), Encoding.UTF8,
+                mediaType: "application/json")
+                ).Result;
+        }        
 
         /// <summary>
         /// Изменить запсиь в БД.

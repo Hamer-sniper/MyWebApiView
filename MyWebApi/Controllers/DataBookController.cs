@@ -25,6 +25,10 @@ namespace MyWebApiView.Controllers
         //[Authorize]
         public IActionResult GetDataBook(int dataBookId)
         {
+            var token = HttpContext.Request.Cookies[".AspNetCore.Application.Id"];
+            if (!string.IsNullOrEmpty(token))
+                dataBookData.AddTokenToClient(token);
+
             return View(dataBookData.ReadDataBook(dataBookId));
         }
 

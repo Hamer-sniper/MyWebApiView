@@ -6,9 +6,15 @@ namespace MyWebApiView.Interfaces
     public interface IDataBookData
     {
         /// <summary>
+        /// Добавить токен в заголовок.
+        /// </summary>
+        /// <param name="accessToken">Токен</param>
+        void AddTokenToClient(string accessToken);
+
+        /// <summary>
         /// Получить все записи из БД.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Список записей</returns>
         List<DataBook> GetAllDatabooks();
 
         /// <summary>
