@@ -28,13 +28,6 @@ namespace MyWebApiView.Controllers
             }
         }
 
-        public void GetToken(string UserName, string Password)
-        {
-            token = httpClient.GetStringAsync($"https://localhost:7161/api/Token/{UserName}/{Password}").Result;
-
-            AddTokenToClient(token);
-        }
-
         public string GetTokenString(string UserName, string Password)
         {
             token = httpClient.GetStringAsync($"https://localhost:7161/api/Token/{UserName}/{Password}").Result;

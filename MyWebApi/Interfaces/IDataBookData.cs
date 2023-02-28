@@ -60,13 +60,6 @@ namespace MyWebApiView.Interfaces
         /// </summary>
         /// <param name="UserName">Логин</param>
         /// <param name="Password">Пароль</param>
-        void GetToken(string UserName, string Password);
-
-        /// <summary>
-        /// Логин (получить токен).
-        /// </summary>
-        /// <param name="UserName">Логин</param>
-        /// <param name="Password">Пароль</param>
         /// <returns>Токен</returns>
         string GetTokenString(string UserName, string Password);
 
